@@ -1,0 +1,26 @@
+# Virtualenv
+venv/
+venv_py311/
+
+# Секреты
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Векторное хранилище и кэш (создаются при запуске)
+assistant_api/chroma_db/
+assistant_api/*.db
+assistant_api/rag_cache.db
+assistant_api/api_rag_cache.db
+
+# Артефакты RAGAS
+*.csv
+*.json
+
+# Материалы задания (не публикуем)
+PEr08 Лекция преподавателя.txt
+установка python 3-11.txt
