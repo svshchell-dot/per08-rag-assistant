@@ -1,31 +1,26 @@
 # PEr08 — RAG-ассистент (ProxyAPI)
 
-Учебный проект: RAG через ProxyAPI (OpenAI-совместимый провайдер).
+**Статус проекта:** Завершен
 
-## Стек
-Python 3.11, openai 1.x, ChromaDB, SQLite, RAGAS 0.4.0, langchain 0.3.x.
+Учебный проект: RAG-ассистент (Retrieval-Augmented Generation) через ProxyAPI (OpenAI-совместимый провайдер). Отвечает на вопросы по локальной базе знаний с кэшированием запросов и оценкой качества.
+
+## Стек технологий
+* **Python 3.11**
+* **openai 1.x** (через ProxyAPI)
+* **ChromaDB** (векторная база данных)
+* **SQLite** (кэширование ответов)
+* **RAGAS 0.4.0** (оценка качества RAG)
+* **langchain 0.3.x** (обработка текста и чанкинг)
 
 ## Что делает
-- Загружает assistant_api/data/docs.txt → чанки (абзацы/предложения, overlap 100).
-- Эмбеддинги text-embedding-3-small (1536 dim) → ChromaDB.
-- Поиск top_k=3 → gpt-4o-mini → ответ.
-- SQLite-кэш (api_rag_cache.db): повторные вопросы из кэша.
-- RAGAS 0.4.0: Faithfulness 1.0, Context Precision 1.0 (на 5 вопросах).
+* Загружает `assistant_api/data/docs.txt` и разбивает на чанки (абзацы/предложения, overlap 100).
+* Создает эмбеддинги с помощью модели `text-embedding-3-small` (1536 dim) и сохраняет в **ChromaDB**.
+* Ищет `top_k=3` релевантных куска и отправляет их в `gpt-4o-mini` для генерации ответа.
+* Кэширует ответы в **SQLite** (`api_rag_cache.db`) — повторные вопросы возвращаются мгновенно.
+* Оценивает качество через **RAGAS 0.4.0** (Faithfulness 1.0, Context Precision 1.0 на 5 тестовых вопросах).
 
 ## Установка
+**1. Создать виртуальное окружение:**
+```bash
 python3.11 -m venv venv
 ./venv/bin/pip install -r requirements.txt
-Создать .env:
-  OPENAI_API_KEY=<key>
-  OPENAI_BASE_URL=https://api.proxyapi.ru/openai/v1
-  OPENAI_API_BASE=https://api.proxyapi.ru/openai/v1
-
-## Запуск
-cd assistant_api && ../venv/bin/python app.py
-Команды: exit, stats, clear.
-
-## Оценка
-cd assistant_api && ../venv/bin/python evaluate_ragas.py
-
-## Скриншоты
-session_app.txt, session_ragas.txt — в корне проекта.
